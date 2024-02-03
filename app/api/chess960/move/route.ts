@@ -71,16 +71,37 @@ export async function POST(req: NextRequest) {
     // Fetch game's starting position from Redis.
     gameState = await redis.get(`chess960_game_states:${gameId}`);
     if (gameState === null) {
-      // Return error if the game does not exist. TODO: show end screen.
-      return NextResponse.json({ message: 'Game not found.' }, { status: 404 });
+      // Return fallback if the game does not exist.
+      return new NextResponse(
+        getFrameMetaHTML({
+          title: `Game ${gameId} - Chess960 | Onframe Tourney`,
+          postUrl: 'https://github.com/fiveoutofnine/onframe-tourney',
+          imageUrl: `${process.env.BASE_URL}/static/og/chess960-gameover.png`,
+          buttons: [{ label: 'View source', type: 'post_redirect' }],
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'text/html' },
+        },
+      );
     }
     state = gameState;
   }
 
   if (gamesWon > 0) {
-    // Return error if the user has already minted an NFT. TODO: can maybe
-    // display the starting position here.
-    return NextResponse.json({ message: 'You already minted an NFT.' }, { status: 400 });
+    // Return fallback if the user has already minted an NFT.
+    return new NextResponse(
+      getFrameMetaHTML({
+        title: `Game ${gameId} - Chess960 | Onframe Tourney`,
+        postUrl: 'https://basescan.org/address/0xaDBa25b5f5035B4BBfd7b1f2eA3152FDc286474B',
+        imageUrl: `${process.env.BASE_URL}/static/og/chess960-win.png`,
+        buttons: [{ label: 'View contract', type: 'post_redirect' }],
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'text/html' },
+      },
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -183,7 +204,7 @@ export async function POST(req: NextRequest) {
     winner === 'white' || !winner
       ? `${process.env.BASE_URL}/api/chess960/move`
       : `${process.env.BASE_URL}/chess960`;
-  const imageUrl = `${process.env.BASE_URL}/api/chess960/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}`;
+  const imageUrl = `${process.env.BASE_URL}/api/chess960/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}&gameId=${gameId}`;
 
   // ---------------------------------------------------------------------------
   // Response
@@ -194,7 +215,10 @@ export async function POST(req: NextRequest) {
       title: `Game ${gameId} - Chess960 | Onframe Tourney`,
       postUrl,
       imageUrl,
-      buttons: winner !== 'black' ? ['Reset board', 'Submit move'] : ['Reset board'],
+      buttons:
+        winner !== 'black'
+          ? [{ label: 'Reset board' }, { label: 'Submit move' }]
+          : [{ label: 'Reset board' }],
     }),
     {
       status: 200,

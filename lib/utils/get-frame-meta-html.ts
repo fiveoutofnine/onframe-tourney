@@ -10,10 +10,13 @@ const getFrameMetaHTML = ({
   title: string;
   imageUrl: string;
   postUrl: string;
-  buttons: string[];
+  buttons: { label: string; type?: 'post' | 'post_redirect' }[];
 }) => {
   const buttonsMetadata = buttons
-    .map((button, i) => `<meta name="fc:frame:button:${i + 1}" content="${button}">`)
+    .map(
+      (button, i) =>
+        `<meta name="fc:frame:button:${i + 1}" content="${button.label}"><meta name="fc:frame:button:${i + 1}:action" content="${button.type ?? 'post'}">`,
+    )
     .join('');
 
   return `<!DOCTYPE html>
