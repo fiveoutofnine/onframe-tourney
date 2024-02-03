@@ -25,6 +25,7 @@ const getFrameMetaHTML = ({
           <meta name="fc:frame" content="vNext">
           <meta name="fc:frame:image" content="${imageUrl}">
           <meta name="fc:frame:post_url" content="${postUrl}">
+          <meta name="fc:frame:input:text" content="e.g. E2 to E4">
           ${buttonsMetadata}
       </head>
     </html>`;

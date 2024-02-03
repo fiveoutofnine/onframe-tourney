@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------------
+// Connection
+// -----------------------------------------------------------------------------
+
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
@@ -6,4 +10,15 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+}
+
+// -----------------------------------------------------------------------------
+// General
+// -----------------------------------------------------------------------------
+
+model ChessTournament {
+  id          String @id @default(cuid())
+  startingFen String @map("starting_fen")
+
+  @@map("chess_tournaments")
 }
