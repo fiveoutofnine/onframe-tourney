@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
     winner === 'white' || !winner
       ? `${process.env.BASE_URL}/api/chess960/move`
       : `${process.env.BASE_URL}/chess960`;
-  const imageUrl = `${process.env.BASE_URL}/api/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}`;
+  const imageUrl = `${process.env.BASE_URL}/api/chess960/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}`;
 
   // ---------------------------------------------------------------------------
   // Response
