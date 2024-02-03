@@ -8,6 +8,8 @@ declare global {
       UPSTASH_TOKEN: string;
       // Database
       DATABASE_URL: string;
+      // Syndicate
+      SYNDICATE_FRAME_API_KEY: string;
     }
   }
 }
