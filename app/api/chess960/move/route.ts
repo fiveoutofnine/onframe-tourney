@@ -188,18 +188,6 @@ export async function POST(req: NextRequest) {
   // Response
   // ---------------------------------------------------------------------------
 
-  console.log(
-    getFrameMetaHTML({
-      title: `Game ${gameId} - Chess960 | Onframe Tourney`,
-      postUrl,
-      imageUrl,
-      buttons: ['Submit move'],
-    }),
-    {
-      status: 200,
-      headers: { 'Content-Type': 'text/html' },
-    },
-  );
   return new NextResponse(
     getFrameMetaHTML({
       title: `Game ${gameId} - Chess960 | Onframe Tourney`,
