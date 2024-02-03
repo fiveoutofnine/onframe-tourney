@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
   // ---------------------------------------------------------------------------
 
   const gameId = Number((await redis.get('chess960_games_completed')) ?? 0);
+  let gameState: string | null = await redis.get(`chess960_game_states:${gameId}`);
 
   // eslint-disable-next-line prefer-const
   let [state, gamesWon] = await Promise.all([
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
   ]);
   if (state === null) {
     // Fetch game's starting position from Redis.
-    const gameState: string | null = await redis.get(`chess960_game_states:${gameId}`);
+    gameState = await redis.get(`chess960_game_states:${gameId}`);
     if (gameState === null) {
       // Return error if the game does not exist. TODO: show end screen.
       return NextResponse.json({ message: 'Game not found.' }, { status: 404 });
@@ -158,9 +159,16 @@ export async function POST(req: NextRequest) {
   // Compute Frame metadata and commit data.
   // ---------------------------------------------------------------------------
 
-  const fen = game.exportFEN();
-  // Commit game state to Redis.
-  await redis.set(`chess960_game_states:${gameId}:${fid}`, fen);
+  let fen: string;
+  // Reset the board if the user clicked the first button on the Frame.
+  if (!init && button === 1 && gameState !== null) {
+    await redis.set(`chess960_game_states:${gameId}:${fid}`, gameState);
+    fen = gameState;
+  } else {
+    fen = game.exportFEN();
+    // Commit game state to Redis.
+    await redis.set(`chess960_game_states:${gameId}:${fid}`, fen);
+  }
 
   const userMove =
     from && to ? `&user=${from}-${to}` : prevFrom && prevTo ? `&user=${prevFrom}-${prevTo}` : '';
