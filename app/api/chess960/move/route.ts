@@ -40,10 +40,10 @@ export async function POST(req: NextRequest) {
   }
 
   const fid = message.interactor.fid;
-  /* const address =
+  const address =
     message.interactor.verified_accounts.length > 0
       ? message.interactor.verified_accounts[0]
-      : message.interactor.custody_address; */
+      : message.interactor.custody_address;
   const button = message.raw.action.tapped_button.index;
   const text = (message.raw.action as unknown as { input: { text: string } }).input.text;
 
@@ -120,6 +120,30 @@ export async function POST(req: NextRequest) {
       // Commit move to Redis.
       if (game.exportJson().isFinished) {
         winner = 'white';
+        // If a user won, we increment the number of games won, and we mint an
+        // NFT to `address.
+        const updateGamesCompleted = async () => {
+          await redis.setnx('chess960_games_completed', 0);
+          await redis.incr('chess960_games_completed');
+        };
+        const updateUserGamesWon = async () => {
+          await redis.setnx(`chess960_games_won:${fid}`, 0);
+          await redis.incr(`chess960_games_won:${fid}`);
+        };
+        const mintNFT = async () => {
+          await fetch('https://frame.syndicate.io/api/mint', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+              Authorization: `Bearer ${process.env.SYNDICATE_FRAME_API_KEY}`,
+            },
+            body: JSON.stringify({
+              frameTrustedData: body.trustedData.messageBytes,
+              args: [address, 0],
+            }),
+          });
+        };
+        await Promise.all([updateGamesCompleted(), updateUserGamesWon(), mintNFT()]);
       } else {
         // Play the engine's move at depth 3.
         [cpuFrom, cpuTo] = Object.entries(game.aiMove(3))[0] as string[];
