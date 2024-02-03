@@ -108,6 +108,7 @@ export async function POST(req: NextRequest) {
 
     // Play the user's move.
     [from, to] = move.split(' to ');
+    game.move(from, to);
     if (game.exportJson().isFinished) {
       winner = 'white';
     } else {
