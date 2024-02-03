@@ -16,7 +16,9 @@ export async function POST(req: NextRequest) {
   // ---------------------------------------------------------------------------
 
   const body: FrameRequest = await req.json();
-  const { isValid, message } = await getFrameMessage(body, { neynarApiKey: 'NEYNAR_API_DOCS' });
+  const { isValid, message } = await getFrameMessage(body, {
+    neynarApiKey: process.env.NEYNAR_API_KEY ?? 'NEYNAR_API_DOCS',
+  });
 
   // Return an error if the request is invalid.
   if (!isValid || !message || !message.raw.action) {
