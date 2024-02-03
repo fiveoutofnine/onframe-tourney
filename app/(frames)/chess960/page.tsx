@@ -8,14 +8,12 @@ export default function Page() {
         <meta property="og:title" content={title} />
         <meta
           property="og:image"
-          /* content="https://onframe-tourney.vercel.app/static/og/chess960.png" */
-          content="https://fiveoutofnine.com/static/og/home.png"
+          content="https://onframe-tourney.vercel.app/static/og/chess960.png"
         />
         <meta name="fc:frame" content="vNext" />
         <meta
           name="fc:frame:image"
-          /* content="https://onframe-tourney.vercel.app/static/og/chess960.png" */
-          content="https://fiveoutofnine.com/static/og/home.png"
+          content="https://onframe-tourney.vercel.app/static/og/chess960.png"
         />
         <meta
           name="fc:frame:post_url"
