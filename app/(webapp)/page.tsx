@@ -8,7 +8,7 @@ export default function Home() {
           Onframe Tourney
         </h1>
         <p className="mb-4 text-center text-base leading-normal text-gray-11">
-          Fully featured competitions Farcaster Frames. If you like this, you&apos;ll love{' '}
+          Competitions Farcaster Frames. If you like this, you&apos;ll love{' '}
           <a
             className="underline decoration-dotted transition-colors hover:text-gray-12 focus-visible:rounded-sm"
             href="https://twitter.com/curta_ctf"
