@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
   const robotoMono400 = fetch(
     new URL(
-      '../../../node_modules/@fontsource/roboto-mono/files/roboto-mono-latin-400-normal.woff',
+      '../../../../node_modules/@fontsource/roboto-mono/files/roboto-mono-latin-400-normal.woff',
       import.meta.url,
     ),
   ).then((res) => res.arrayBuffer());
