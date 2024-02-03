@@ -1,0 +1,24 @@
+// -----------------------------------------------------------------------------
+// Connection
+// -----------------------------------------------------------------------------
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -----------------------------------------------------------------------------
+// General
+// -----------------------------------------------------------------------------
+
+model ChessTournament {
+  id          String @id @default(cuid())
+  startingFen String @map("starting_fen")
+
+  @@map("chess_tournaments")
+}
