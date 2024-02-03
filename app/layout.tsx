@@ -18,15 +18,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Onframe Tourney',
     description: 'Fully featured competitions with Farcaster Frames.',
-    siteName: 'Onframe Chess Tourney - Curta',
+    siteName: 'Onframe Tourney - Curta',
     url: 'https://onframe-tourney.vercel.app',
     locale: 'en_US',
-    images: ['https://onframe-chess.vercel.app/static/og/home.png'],
+    images: ['https://onframe-tourney.vercel.app/static/og/chess960.png'],
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@fiveoutofnine',
-    images: ['https://onframe-chess.vercel.app/static/og/home.png'],
+    images: ['https://onframe-tourney.vercel.app/static/og/chess960.png'],
   },
 };
 

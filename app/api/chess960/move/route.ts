@@ -179,10 +179,11 @@ export async function POST(req: NextRequest) {
         ? `&cpu=${prevCpuFrom}-${prevCpuTo}`
         : '';
   const gg = winner ? `&gg=${winner === 'white' ? 1 : 0}` : '';
-  const postUrl = !winner
-    ? `${process.env.BASE_URL}/api/chess960/move`
-    : `${process.env.BASE_URL}/play`;
-  const imageUrl = `https://onframe-chess.vercel.app/api/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}`;
+  const postUrl =
+    winner === 'white' || !winner
+      ? `${process.env.BASE_URL}/api/chess960/move`
+      : `${process.env.BASE_URL}/chess960`;
+  const imageUrl = `${process.env.BASE_URL}/api/board-image?state=${encodeURIComponent(fen)}${userMove}${cpuMove}${gg}`;
 
   // ---------------------------------------------------------------------------
   // Response
